@@ -1,0 +1,34 @@
+
+import os
+import discord
+import csv
+import random
+
+phrases = []
+with open("phrases.csv") as csv_file:
+  csv_reader = csv.reader(csv_file, delimiter=',')
+  for row in csv_reader:
+      phrases.append(row[1])
+ 
+
+client = discord.Client()
+
+@client.event
+async def on_ready():
+    print(f"{client.user} is logged in now!")
+
+@client.event
+async def on_message(message):
+    print(message.content)
+    if message.content.startswith("$greet"):
+      await message.channel.send(f"Hello there {message.author}")
+    elif "$thought" in message.content:
+      response = phrases[random.randint(0, len(phrases) - 1)]
+   
+      
+    await message.channel.send(response)
+ 
+
+
+my_secret = os.environ['TOKEN']
+client.run(my_secret)
